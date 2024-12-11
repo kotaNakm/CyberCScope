@@ -8,7 +8,7 @@ freq="10s"
 width=3
 k=48
 init_len=6 # width x 2
-input_fname="partial_cci18"
+input_fname="partial_cci_18"
 
 # CyberCScope
 python3 main.py \
