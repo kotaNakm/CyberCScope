@@ -4,7 +4,7 @@ Implementation of [CyberCScope](),
 Kota Nakamura, Shungo Tanaka, Koki Kawabata, Yasuko Matsubara, Yasushi Sakurai.
 <!-- The Web Conference 2025, [WWW'25](). -->
 
-<!-- <img src="./_assets/algo.png" width=600> -->
+<img src="./_assets/op-sifi.png" width=600>
 
  CyberCScope is freely available for non-commercial purposes. 
  If you intend to use CyberCScope for a commercial purpose, please contact us by email at [kotaNakm0317@gmail.com]
@@ -24,6 +24,11 @@ Time + Categorical attributes + (Skewed) Continuous attributes
 2|                                :  
 3|                                :  
 
+> [!NOTE]
+> The method can flexibly handle both categorical and continuous attributes.
+> The continuous attributes in cybersecurity systems typically exhibit skew.
+
+<img src="./_assets/data_dist.png" width=300>
 
 ## Datasets
 * [CI'17](https://drive.google.com/file/d/1yjNbQOhA_A4P88bLFCVHIL5eW5tJ1zNg/view?usp=drive_link)
