@@ -75,16 +75,6 @@ def prepare_event_tensor(
         return data.reset_index(drop=True)
 
 
-def plot_ground_truth(ax, pattern, width=100):
-    pattern_idxs = list(pattern)
-    pattern_idxs = [int(s) for s in pattern_idxs]
-    st = 0
-    for pattern_id in pattern_idxs:
-        ax.hlines(y=pattern_id, xmin=st, xmax=st + width, color="gray", linewidth=8)
-        st += width
-    ax.set_title("Ground truth")
-
-
 def plot_regimeassignment(
     ax,
     CyberCScope: object,
@@ -130,6 +120,51 @@ def plot_regimeassignment(
     ax.set_yticks(range(all_rgm_num - len(skip)))
 
 
+def plot_anomscore(
+    ax,
+    CyberCScope: object,
+    width,
+    tensor,
+    label_series,
+    time_idx,
+    label_col
+):
+    tensor = pd.concat([tensor, label_series], axis=1)
+    gt_series = []
+    for start in range(0, CyberCScope.data_len, width):
+        end = start + width
+        group = tensor[(tensor[time_idx] >= start) & (tensor[time_idx] < end)]     
+        if group.empty:
+            gt_series.append(0)
+        else:
+            if (group[label_col] != 'BENIGN').any():
+                gt_series.append(1)
+            else:
+                gt_series.append(0)
+
+    anomscores = CyberCScope.anomaly_scores
+    anomscores_min = min(anomscores)
+    anomscores_max = max(anomscores)
+    scaled_anomscores = [(value - anomscores_min) / (anomscores_max - anomscores_min) for value in anomscores]
+    repeated_anomscores = [value for value in scaled_anomscores for _ in range(width)]
+    repeated_gt_series = [value for value in gt_series for _ in range(width)]
+    
+    ax.plot(repeated_anomscores, linestyle='-', color='b', linewidth=0.5, label="Anomaly Score")
+    for i in range(len(repeated_gt_series) - 1):
+        ax.hlines(
+            y=repeated_gt_series[i], 
+            xmin=i, 
+            xmax=i + 1, 
+            colors='r', 
+            linestyles='-', 
+            linewidth=2
+        )
+    ax.set_title("Anomaly Score")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Value")
+    ax.grid(True)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
@@ -139,6 +174,7 @@ if __name__ == "__main__":
     parser.add_argument("--time_idx", type=str)
     parser.add_argument("--categorical_idxs", type=str)
     parser.add_argument("--continuous_idxs", type=str)
+    parser.add_argument("--label_col", type=str)
     parser.add_argument("--freq", type=str, default="H")
     parser.add_argument("--init_len", type=int)
 
@@ -163,6 +199,7 @@ if __name__ == "__main__":
     categorical_idxs = args.categorical_idxs.split(",")
     continuous_idxs = args.continuous_idxs.split(",")
     time_idx = args.time_idx
+    label_col = args.label_col
 
     raw_df = pd.read_csv(args.input_fpath)
     raw_df[time_idx] = pd.to_datetime(raw_df[time_idx])
@@ -261,9 +298,6 @@ if __name__ == "__main__":
     ccs.data_len = max_
 
     for i in range(0, max_, width):
-        # if i > 3500: # 任意の位置で終了
-        #     break
-
         start_time = time.process_time()
         current_tensor = tensor[
             (tensor[args.time_idx] >= i) & (tensor[args.time_idx] < (i + width))
@@ -303,10 +337,13 @@ if __name__ == "__main__":
 
     # viz temporal pattern segmetation
     fig, axes = plt.subplots(figsize=(15, 4))
-    # plot_ground_truth(axes[0], args.pattern)
     print(regime_assignments)
-
     plot_regimeassignment(axes, ccs, regime_assignments)
     fig.tight_layout()
     fig.savefig(outputdir + "/segmentation_results.png")
-    
+
+    # viz anomalyscore
+    fig, axes = plt.subplots(figsize=(15, 4))
+    plot_anomscore(axes, ccs, width ,tensor, raw_df[label_col], time_idx, label_col)
+    fig.tight_layout()
+    fig.savefig(outputdir + "/anomalyscore.png")
