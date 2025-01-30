@@ -1,7 +1,7 @@
 # CyberCScope
 
 Implementation of [CyberCScope](),  
-Kota Nakamura, Koki Kawabata, Shungo Tanaka, Yasuko Matsubara, Yasushi Sakurai.
+Kota Nakamura, Koki Kawabata, Shungo Tanaka, Yasuko Matsubara, Yasushi Sakurai.  
 The Web Conference 2025 short research paper.
 
 <img src="./_assets/op-sifi.png" width=600>
@@ -12,8 +12,6 @@ The Web Conference 2025 short research paper.
 ## Quick demo
     # Quick demo for partial data of CCI'18
     $ sh demo.sh
-
-<!-- <img src="./_assets/temporal_clustering.png" width=400> -->
 
 ## Input for CyberCScope
 Pandas.DataFrame  
