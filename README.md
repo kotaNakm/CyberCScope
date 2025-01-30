@@ -1,8 +1,8 @@
 # CyberCScope
 
 Implementation of [CyberCScope](),  
-Kota Nakamura, Shungo Tanaka, Koki Kawabata, Yasuko Matsubara, Yasushi Sakurai.
-<!-- The Web Conference 2025, [WWW'25](). -->
+Kota Nakamura, Koki Kawabata, Shungo Tanaka, Yasuko Matsubara, Yasushi Sakurai.
+The Web Conference 2025 short research paper.
 
 <img src="./_assets/op-sifi.png" width=600>
 
