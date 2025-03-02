@@ -28,7 +28,7 @@ Time + Categorical attributes + (Skewed) Continuous attributes
 > The method can flexibly handle both categorical and continuous attributes.  
 > It can handle skewness in the continuous attributes.
 
-<img src="./_assets/data_dist.png" width=300>
+<img src="./_assets/data_dist.png" width=500>
 
 ## Datasets
 * [CI'17](https://drive.google.com/file/d/1yjNbQOhA_A4P88bLFCVHIL5eW5tJ1zNg/view?usp=drive_link)
